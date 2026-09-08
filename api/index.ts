@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import connectDB  from '../src/db'
 
 
 const app = express();
@@ -85,6 +86,8 @@ app.use('/api/greetings', greetingRouter)
 // Connect To DB
 // import mongoose from 'mongoose';
 // mongoose.connect(process.env.MONGODB_URL || "");
+
+connectDB();
 
 // Start the express server
 const PORT = 3000
