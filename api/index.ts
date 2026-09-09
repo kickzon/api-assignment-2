@@ -1,32 +1,30 @@
 import 'dotenv/config'
-import express from 'express';
+import express from 'express'
 import cors from 'cors'
-import cookieParser from 'cookie-parser';
-import path from 'path';
-import connectDB  from '../src/db'
+import cookieParser from 'cookie-parser'
+import path from 'path'
+import connectDB from '../src/db'
 import userRoutes from '../src/routes/users'
 import authRoutes from '../src/routes/auth'
 import greetingRoutes from '../src/routes/greetings'
+import bookRoutes from '../src/routes/book'
 
-
-const app = express();
+const app = express()
 
 // in the .env file can the following variables be included
 // JWT_SECRET = 'secret'
 // NODE_ENV = 'development' # development | production
 // CLIENT_URL = 'http://localhost:4000'
 
-
 // Middleware
 // Reads a request body sent as JSON text and turns it into a real JavaScript
 // object, which Express hands us as req.body. Without this line req.body is
 // undefined - that is what our controllers check for first.
-app.use(express.json());
+app.use(express.json())
 
 // Reads the browser's Cookie header and splits it into req.cookies, so
 // verifyToken can reach the token as req.cookies.accessToken.
-app.use(cookieParser());
-
+app.use(cookieParser())
 
 // CORS only concerns requests from OTHER origins. Our own client lives in
 // public/ and is served from the same origin as this API, so the browser never
@@ -36,10 +34,12 @@ app.use(cookieParser());
 //   credentials -> whether that domain may also be logged in (send the cookie)
 // With CLIENT_URL empty, no CORS headers are sent at all and only our own
 // same-origin client can use the API from a browser.
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000', // This makes the Express server accept requests from other domains
-  credentials: true    // Allows cookies sent to this API
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:3000', // This makes the Express server accept requests from other domains
+    credentials: true, // Allows cookies sent to this API
+  }),
+)
 
 // Serve the static client (the HTML/CSS/JS in public/).
 // Read the line from the inside out:
@@ -75,27 +75,22 @@ app.use(cors({
 //
 // On Vercel this line is mostly a local convenience - the platform serves
 // public/ by itself, before a request ever reaches this function.
-app.use(express.static(path.join(process.cwd(), 'public')));
-
+app.use(express.static(path.join(process.cwd(), 'public')))
 
 // Routes
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/greetings', greetingRoutes)
-
-
+app.use('/api/books', bookRoutes)
 
 // Connect To DB
 // import mongoose from 'mongoose';
 // mongoose.connect(process.env.MONGODB_URL || "");
 
-connectDB();
+connectDB()
 
 // Start the express server
 const PORT = 3000
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
 })
-
-
-
