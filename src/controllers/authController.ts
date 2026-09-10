@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import User from "../models/user"
-import user from "../models/user"
 
 export const login = async (req: Request, res: Response) => {
     const {username, password} = req.body
@@ -11,12 +10,23 @@ export const login = async (req: Request, res: Response) => {
         return
     }
 
-    const hashedPassword = "$2b$10$WoiGUJIU1IB5VarJOe468eae0wHxD53MI9PJta2ohnBam2R72Kc2S"
+    if (typeof username !== 'string' || typeof password !== 'string') {
+        res.status(400).json({message: 'username and password must be strings'})
+        return
+    }
+
+    const user = await User.findOne({ username: username })
+
+    if (!user) {
+        res.status(401).json({message: 'username/password are wrong'})
+        return
+    }
+
+    const hashedPassword = user.password
 
     const isLoggedIn = await bcrypt.compare(password, hashedPassword)
-    if (username === 'admin' && password === '123') {
+    if (isLoggedIn) {
         const accessToken = jwt.sign({username}, process.env.JWT_SECRET || "", {expiresIn: '7d'});
-        console.log(accessToken)
 
 
         res.cookie('accessToken', accessToken, {
