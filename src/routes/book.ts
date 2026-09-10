@@ -6,12 +6,13 @@ import {
   updateBook,
   deleteBook,
 } from '../controllers/bookController'
+import { verifyToken } from '../middleware/verifyToken'
 const router = express.Router()
 
-router.post('/', createBook)
+router.post('/', verifyToken, createBook)
 router.get('/', getAllBooks)
 router.get('/:id', getBook)
-router.patch('/:id', updateBook)
-router.delete('/:id', deleteBook)
+router.patch('/:id', verifyToken, updateBook)
+router.delete('/:id', verifyToken, deleteBook)
 
 export default router
