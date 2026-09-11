@@ -5,11 +5,26 @@ const bookSchema = new Schema({
     type: String,
     required: true,
   },
-  description: String,
-  author: String,
-  genres: [String],
-  image: String,
-  published_year: Number,
+  description: {
+    type: String,
+    default: '',
+  },
+  author: {
+    type: String,
+    default: '',
+  },
+  genres: {
+    type: [String],
+    default: [],
+  },
+  image: {
+    type: String,
+    default: '',
+  },
+  published_year: {
+    type: Number,
+    default: null,
+  },
 })
 
 const Book = mongoose.model('Book', bookSchema)
