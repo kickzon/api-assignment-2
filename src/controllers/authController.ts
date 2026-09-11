@@ -89,6 +89,10 @@ export const register = async (req: Request, res: Response) => {
 }
 
 export const logout = async (req: Request, res: Response) => {
-    res.clearCookie('accessToken')
+    res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    })
     res.json({message: "You are logged out"})
 }
