@@ -4,6 +4,9 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import connectDB  from '../src/db'
+import userRoutes from '../src/routes/users'
+import authRoutes from '../src/routes/auth'
+import greetingRoutes from '../src/routes/greetings'
 
 
 const app = express();
@@ -76,10 +79,9 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 
 
 // Routes
-import authRouter from '../src/routes/auth'
-import greetingRouter from '../src/routes/greetings'
-app.use('/api/auth', authRouter)
-app.use('/api/greetings', greetingRouter)
+app.use('/api/users', userRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/greetings', greetingRoutes)
 
 
 

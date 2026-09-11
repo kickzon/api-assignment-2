@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import User from "../models/user"
 
 export const login = async (req: Request, res: Response) => {
     const {username, password} = req.body
@@ -9,12 +10,23 @@ export const login = async (req: Request, res: Response) => {
         return
     }
 
-    const hashedPassword = "$2b$10$WoiGUJIU1IB5VarJOe468eae0wHxD53MI9PJta2ohnBam2R72Kc2S"
+    if (typeof username !== 'string' || typeof password !== 'string') {
+        res.status(400).json({message: 'username and password must be strings'})
+        return
+    }
+
+    const user = await User.findOne({ username: username })
+
+    if (!user) {
+        res.status(401).json({message: 'username/password are wrong'})
+        return
+    }
+
+    const hashedPassword = user.password
 
     const isLoggedIn = await bcrypt.compare(password, hashedPassword)
-    if (username === 'admin' && password === '123') {
+    if (isLoggedIn) {
         const accessToken = jwt.sign({username}, process.env.JWT_SECRET || "", {expiresIn: '7d'});
-        console.log(accessToken)
 
 
         res.cookie('accessToken', accessToken, {
@@ -51,18 +63,36 @@ export const register = async (req: Request, res: Response) => {
     }
 
     try {
+
+        const existingUser = await User.findOne({ username: username })
+
+        if (existingUser) {
+            res.status(409).json({ message: 'username already exists' })
+            return
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        const newUser = new User({
+            username: username,
+            password: hashedPassword
+        })
+        await newUser.save()
+
         // The hashedPassword is the value that should be saved in the DB, not the plain password. For security reasons
-        res.json({message: "You are registered", username: username, password: password, hashedPassword: hashedPassword})
+        res.status(201).json({message: "You are registered", user: {username: username}})
     } catch (e) {
-        console.log(e)
+        res.status(500).json({message: "Internal server error"})
     }
 
     
 }
 
 export const logout = async (req: Request, res: Response) => {
-    res.clearCookie('accessToken')
+    res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    })
     res.json({message: "You are logged out"})
 }
