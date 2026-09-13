@@ -82,6 +82,8 @@ app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/greetings', greetingRoutes)
 app.use('/api/books', bookRoutes)
+app.use('/api/reviews', reviewRoutes)
+main
 
 // Connect To DB
 // import mongoose from 'mongoose';
