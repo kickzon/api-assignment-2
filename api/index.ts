@@ -8,6 +8,7 @@ import userRoutes from '../src/routes/users'
 import authRoutes from '../src/routes/auth'
 import greetingRoutes from '../src/routes/greetings'
 import bookRoutes from '../src/routes/book'
+import reviewRoutes from '../src/routes/reviews'
 
 const app = express()
 
@@ -83,7 +84,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/greetings', greetingRoutes)
 app.use('/api/books', bookRoutes)
 app.use('/api/reviews', reviewRoutes)
-main
+
 
 // Connect To DB
 // import mongoose from 'mongoose';
