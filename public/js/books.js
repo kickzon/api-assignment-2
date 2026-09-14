@@ -16,7 +16,7 @@ function renderPublicBooks(data) {
   element.innerHTML = data
     .map(
       (book) => `
-  <a href='#'>
+  <a href='book.html?id=${book._id}'>
   <img 
   src='${book.image}' 
   alt='${book.title}'>
