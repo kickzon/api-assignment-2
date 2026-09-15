@@ -12,7 +12,7 @@ async function fetchBooks() {
 }
 
 function renderPublicBooks(data) {
-  const element = document.querySelector('body') // Define right element later
+  const element = document.querySelector('.books')
   element.innerHTML = data
     .map(
       (book) => `
@@ -29,12 +29,12 @@ function renderPublicBooks(data) {
     .join('')
 }
 
-// async function initPublicBooks() {
-//   const data = await fetchBooks()
-//   renderPublicBooks(data)
-// }
+async function initPublicBooks() {
+  const data = await fetchBooks()
+  renderPublicBooks(data)
+}
 
-// initPublicBooks()
+initPublicBooks()
 
 // // protected.html
 // const tableContainer = document.querySelector('body')
