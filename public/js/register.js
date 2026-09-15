@@ -19,6 +19,7 @@ document.getElementById("register-form").addEventListener("submit", function(eve
                     username: username,
                     password: password
                 }),
+                credentials: "include"
             });
             const data = await response.json();
             // 4 On success, redirect to login.html. On failure display an error message in #register-message
