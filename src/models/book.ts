@@ -1,30 +1,47 @@
 import mongoose, { Schema } from 'mongoose'
 
-const bookSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
+const bookSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      default: '',
+    },
+
+    author: {
+      type: String,
+      default: '',
+    },
+
+    genres: {
+      type: [String],
+      default: [],
+    },
+
+    image: {
+      type: String,
+      default: '',
+    },
+
+    published_year: {
+      type: Number,
+      default: null,
+    },
   },
-  description: {
-    type: String,
-    default: '',
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-  author: {
-    type: String,
-    default: '',
-  },
-  genres: {
-    type: [String],
-    default: [],
-  },
-  image: {
-    type: String,
-    default: '',
-  },
-  published_year: {
-    type: Number,
-    default: null,
-  },
+)
+
+bookSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'book_id',
 })
 
 const Book = mongoose.model('Book', bookSchema)

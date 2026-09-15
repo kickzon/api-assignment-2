@@ -38,7 +38,7 @@ export const getBook = async (req: Request, res: Response) => {
   const { id } = req.params
 
   try {
-    const result = await Book.findById(id)
+    const result = await Book.findById(id).populate('reviews')
     if (!result) {
       res.status(404).json({ message: 'Book not found' })
       return
