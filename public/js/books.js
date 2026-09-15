@@ -75,9 +75,6 @@ function renderAdminBooks(data) {
 
 // initAdminBooks()
 
-// Hard coded while testing
-const id = '6aa6bacbe88fbfdaa210a01f'
-
 async function fetchBook(id) {
   try {
     const response = await fetch(API_URL + BOOKS_PATH + `/${id}`)
@@ -88,16 +85,3 @@ async function fetchBook(id) {
     console.error('Error:', e)
   }
 }
-
-function renderBook(book) {
-  const element = document.querySelector('body') // Define right element later
-  element.innerHTML = ` 
-    Detta är innerHTML för en specifik bok med tillhörande reviews.`
-}
-
-// async function initBook() {
-//   const data = await fetchBook(id)
-//   renderBook(data)
-// }
-
-// initBook()
