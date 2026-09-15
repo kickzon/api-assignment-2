@@ -4,8 +4,33 @@ async function fetchBooks() {
   try {
     const response = await fetch(API_URL + BOOKS_PATH)
     const data = await response.json()
-
     return data
+  } catch (e) {
+    console.error('Error:', e)
+  }
+}
+
+async function fetchBook(id) {
+  try {
+    const response = await fetch(API_URL + BOOKS_PATH + `/${id}`)
+    const data = await response.json()
+    return data
+  } catch (e) {
+    console.error('Error:', e)
+  }
+}
+
+async function createBook(book) {
+  try {
+    const response = await fetch(API_URL + BOOKS_PATH, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(book),
+    })
+    const data = await response.json()
+    console.log(data)
   } catch (e) {
     console.error('Error:', e)
   }
@@ -29,59 +54,45 @@ function renderPublicBooks(data) {
     .join('')
 }
 
-async function initPublicBooks() {
-  const data = await fetchBooks()
-  renderPublicBooks(data)
-}
-
-initPublicBooks()
-
-// // protected.html
-// const tableContainer = document.querySelector('body')
-// tableContainer.innerHTML = `
-// <table>
+// Into protected.html
+// <table class="books-table">
 //   <thead>
 //     <tr>
-//       <th>Titel</th>
-//       <th>Författare</th>
-//       <th>Genrer</th>
-//       <th>Skapad</th>
+//       <th>Title</th>
+//       <th>Author</th>
+//       <th>Genres</th>
+//       <th>Created</th>
 //     </tr>
 //   </thead>
-// </table>`
+//   <tbody class="books-table-body"></tbody>
+// </table>
 
 function renderAdminBooks(data) {
-  const element = document.querySelector('table') // Define right element later
+  const element = document.querySelector('.books-table-body')
   element.innerHTML = data
     .map(
       (book) => `
-  <tbody>
     <tr>
       <td>${book.title}</td>
       <td>${book.author}</td>
       <td>${book.genres}</td>
       <td>${book.created_at}</td>
     </tr>
-  </tbody>
   `,
     )
     .join('')
 }
 
-// async function initAdminBooks() {
-//   const data = await fetchBooks()
-//   renderAdminBooks(data)
-// }
-
-// initAdminBooks()
-
-async function fetchBook(id) {
-  try {
-    const response = await fetch(API_URL + BOOKS_PATH + `/${id}`)
-    const data = await response.json()
-
-    return data
-  } catch (e) {
-    console.error('Error:', e)
-  }
+async function initPublicBooks() {
+  const data = await fetchBooks()
+  renderPublicBooks(data)
 }
+
+async function initAdminBooks() {
+  const data = await fetchBooks()
+  renderAdminBooks(data)
+}
+
+initPublicBooks()
+initAdminBooks()
+// createBook(book)
