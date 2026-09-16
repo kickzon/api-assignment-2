@@ -1,3 +1,4 @@
+/* Table */
 .books-table {
   width: min(100%, 900px);
   margin-top: 2rem;
@@ -44,5 +45,108 @@
   .books-table th,
   .books-table td {
     white-space: nowrap;
+  }
+}
+
+/* Form */
+.create-book-form {
+  width: min(100%, 900px);
+  margin-top: 2rem;
+  padding: 2rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  background-color: var(--mustard);
+  /* border: 2px solid var(--mustard); */
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgb(144 81 46 / 15%);
+}
+
+.create-book-form label {
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-weight: 700;
+}
+
+.create-book-form input,
+.create-book-form textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+
+  border: 2px solid var(--mustard);
+  border-radius: 15px;
+
+  background-color: var(--background-color);
+  color: var(--olive);
+
+  font-family: var(--text);
+  font-size: 1rem;
+}
+
+.create-book-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-book-form input:focus,
+.create-book-form textarea:focus {
+  outline: 3px solid rgb(211 159 83 / 35%);
+  border-color: var(--cinnamon);
+}
+
+.create-book-form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+
+  padding: 0.8rem 1.4rem;
+
+  border: 2px solid var(--cinnamon);
+  border-radius: 15px;
+
+  background-color: var(--cinnamon);
+  color: white;
+
+  font-family: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.create-book-form button:hover {
+  background-color: transparent;
+  color: var(--cinnamon);
+  transform: translateY(-2px);
+}
+
+.create-book-form button:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
+}
+
+/* .create-book-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+} */
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  .create-book-form {
+    grid-template-columns: 1fr;
+  }
+
+  .create-book-form button {
+    grid-column: auto;
   }
 }

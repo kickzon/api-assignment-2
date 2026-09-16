@@ -34,6 +34,40 @@
         </thead>
         <tbody class="books-table-body"></tbody>
       </table>
+      <button type="button" class="add-book-btn">Add new book</button>
+      <form class="create-book-form hidden">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" />
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input type="text" id="author" name="author" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="genres">Genre</label>
+          <input type="text" id="genres" name="genres" />
+        </div>
+
+        <div class="form-group">
+          <label for="image">Image</label>
+          <input type="text" id="image" name="image" />
+        </div>
+
+        <div class="form-group">
+          <label for="published-year">Published</label>
+          <input type="number" id="published-year" name="published_year" />
+        </div>
+
+        <button type="submit">Add book</button>
+      </form>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
