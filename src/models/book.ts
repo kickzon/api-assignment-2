@@ -31,6 +31,10 @@ const bookSchema = new Schema(
       type: Number,
       default: null,
     },
+    created_at: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     toJSON: { virtuals: true },
