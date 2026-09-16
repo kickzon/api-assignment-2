@@ -54,19 +54,6 @@ function renderPublicBooks(data) {
     .join('')
 }
 
-// Into protected.html
-// <table class="books-table">
-//   <thead>
-//     <tr>
-//       <th>Title</th>
-//       <th>Author</th>
-//       <th>Genres</th>
-//       <th>Created</th>
-//     </tr>
-//   </thead>
-//   <tbody class="books-table-body"></tbody>
-// </table>
-
 function renderAdminBooks(data) {
   const element = document.querySelector('.books-table-body')
   element.innerHTML = data
