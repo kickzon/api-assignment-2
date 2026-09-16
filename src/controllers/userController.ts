@@ -50,6 +50,15 @@ export const updateUser = async (req: Request, res: Response) => {
     await user.save();
     res.json({ message: "User updated successfully" });
   } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === 11000
+    ) {
+      res.status(409).json({ message: "Username already exists" });
+      return;
+    }
     res.status(500).json({ message: "Error updating user" });
   }
 };
