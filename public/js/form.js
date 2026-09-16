@@ -5,6 +5,7 @@ addBookBtn.addEventListener('click', showForm)
 bookForm.addEventListener('submit', addBook)
 
 function showForm() {
+  bookForm.reset()
   bookForm.classList.remove('hidden')
   addBookBtn.classList.add('hidden')
 }
