@@ -145,6 +145,59 @@ input:focus {
   font-weight: 700;
 }
 
+.user-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.update-form {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 420px;
+}
+
+.account-button {
+  padding: 0.65rem 1.1rem;
+  border: 2px solid;
+  border-radius: 15px;
+  font: 600 0.95rem var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.update-button,
+.save-button {
+  border-color: var(--olive);
+  background-color: var(--olive);
+  color: white;
+}
+
+.update-button:hover,
+.save-button:hover {
+  background-color: transparent;
+  color: var(--olive);
+}
+
+.delete-button {
+  border-color: var(--cinnamon);
+  background-color: transparent;
+  color: var(--cinnamon);
+}
+
+.delete-button:hover {
+  background-color: var(--cinnamon);
+  color: white;
+}
+
+.account-button:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
+}
+
 @media (max-width: 650px) {
   #users-list > div {
     grid-template-columns: 1fr;

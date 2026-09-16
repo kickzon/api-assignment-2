@@ -29,6 +29,11 @@ export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { username, password } = req.body;
 
+  if (res.locals.userId !== id) {
+    res.status(403).json({ message: "You can only update your own account" });
+    return;
+  }
+
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -45,12 +50,26 @@ export const updateUser = async (req: Request, res: Response) => {
     await user.save();
     res.json({ message: "User updated successfully" });
   } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === 11000
+    ) {
+      res.status(409).json({ message: "Username already exists" });
+      return;
+    }
     res.status(500).json({ message: "Error updating user" });
   }
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (res.locals.userId !== id) {
+    res.status(403).json({ message: "You can only delete your own account" });
+    return;
+  }
   try {
     const user = await User.findByIdAndDelete(id);
     if (!user) {
