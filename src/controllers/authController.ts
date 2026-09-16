@@ -96,3 +96,23 @@ export const logout = async (req: Request, res: Response) => {
     })
     res.json({message: "You are logged out"})
 }
+
+export const getMe = async (req: Request, res: Response) => {
+    const userId = res.locals.userId
+    if (!userId) {
+        res.status(401).json({message: "Unauthorized"})
+        return
+    }
+    try {
+        const user = await User.findById(userId).select("-password")
+
+    if (!user) {
+        res.status(404).json({ message: "User not found" })
+        return
+    }
+
+        res.json({ _id: user._id, username: user.username })
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" })
+    }
+}
