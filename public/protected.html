@@ -34,19 +34,20 @@
         </thead>
         <tbody class="books-table-body"></tbody>
       </table>
-      <form class="create-book-form">
+      <button type="button" class="add-book-btn">Add new book</button>
+      <form class="create-book-form hidden">
         <div class="form-group">
-          <label for="title">Titel</label>
+          <label for="title">Title</label>
           <input type="text" id="title" name="title" />
         </div>
 
         <div class="form-group">
-          <label for="author">Författare</label>
+          <label for="author">Author</label>
           <input type="text" id="author" name="author" />
         </div>
 
         <div class="form-group">
-          <label for="description">Beskrivning</label>
+          <label for="description">Description</label>
           <textarea id="description" name="description"></textarea>
         </div>
 
@@ -56,16 +57,16 @@
         </div>
 
         <div class="form-group">
-          <label for="image">Bild</label>
+          <label for="image">Image</label>
           <input type="text" id="image" name="image" />
         </div>
 
         <div class="form-group">
-          <label for="published-year">Utgivningsår</label>
+          <label for="published-year">Published</label>
           <input type="number" id="published-year" name="published_year" />
         </div>
 
-        <button type="submit">Skapa bok</button>
+        <button type="submit">Add book</button>
       </form>
     </div>
     <script

@@ -137,6 +137,10 @@
   gap: 0.4rem;
 } */
 
+.hidden {
+  display: none;
+}
+
 @media (max-width: 650px) {
   .create-book-form {
     grid-template-columns: 1fr;
