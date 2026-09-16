@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import User from '../models/user'
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.cookies.accessToken) {
@@ -7,7 +8,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET || "", (error: jwt.VerifyErrors | null, decoded: string | jwt.JwtPayload | undefined) => {
+  jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET || "", async (error: jwt.VerifyErrors | null, decoded: string | jwt.JwtPayload | undefined) => {
     if (
       error ||
       !decoded ||
@@ -18,7 +19,18 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
       return;
     }
 
+    try {
+  const accountExists = await User.exists({ _id: decoded.userId });
+
+  if (!accountExists) {
+    res.status(401).send();
+    return;
+  }
+
     res.locals.userId = decoded.userId;
     next();
+  } catch (error) {
+  res.status(500).send();
+  }
   });
-};
+}

@@ -253,4 +253,3 @@ document.getElementById("logout-btn").addEventListener(
         }
     }
 );
-
