@@ -9,7 +9,54 @@
 }
 
 .books img {
-  width: 200px;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3.15;
+  object-fit: cover;
+}
+
+.books a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.books a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgb(144 81 46 / 18%);
+}
+
+.books h3 {
+  margin: 1rem 1rem 0.4rem;
+  color: var(--cinnamon);
+  font-family: var(--H1);
+  font-size: 1.3rem;
+}
+.books p {
+  margin: 0.25rem 1rem;
+  color: var(--olive);
+  font-family: var(--text);
+}
+.books p:last-child {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .books {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .books {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .books {
+    grid-template-columns: 1fr;
+  }
 }
 
 .books-table {
