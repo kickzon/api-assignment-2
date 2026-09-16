@@ -38,6 +38,7 @@ async function createBook(book) {
 
 function renderPublicBooks(data) {
   const element = document.querySelector('.books')
+  if (!element) return
   element.innerHTML = data
     .map(
       (book) => `
@@ -56,6 +57,7 @@ function renderPublicBooks(data) {
 
 function renderAdminBooks(data) {
   const element = document.querySelector('.books-table-body')
+  if (!element) return
   element.innerHTML = data
     .map(
       (book) => `
