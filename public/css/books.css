@@ -108,6 +108,25 @@
   }
 }
 
+.add-book-btn {
+  padding: 0.65rem 1.25rem;
+  border: 2px solid var(--cinnamon);
+  border-radius: 15px;
+  background-color: transparent;
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.add-book-btn:hover {
+  background-color: var(--cinnamon);
+  color: white;
+}
+
 /* Form */
 .create-book-form {
   width: min(100%, 900px);
