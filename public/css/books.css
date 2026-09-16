@@ -1,4 +1,17 @@
 /* Table */
+.books {
+  width: min(100%, 1100px);
+  margin: 2rem auto;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.books img {
+  width: 200px;
+}
+
 .books-table {
   width: min(100%, 900px);
   margin-top: 2rem;

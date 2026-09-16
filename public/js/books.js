@@ -42,6 +42,7 @@ function renderPublicBooks(data) {
   element.innerHTML = data
     .map(
       (book) => `
+  <div>
   <a href='book.html?id=${book._id}'>
   <img 
   src='${book.image}' 
@@ -50,7 +51,8 @@ function renderPublicBooks(data) {
   </a>
   <p>${book.author}</p>
   <p>${book.published_year}</p>
-  <p>${book.genres}</p>`,
+  <p>${book.genres}</p>
+  </div>`,
     )
     .join('')
 }
