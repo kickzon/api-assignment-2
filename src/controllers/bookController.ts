@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import Book from '../models/book'
+import Review from '../models/reviews'
 
 export const createBook = async (req: Request, res: Response) => {
   const { title, description, author, genres, image, published_year } = req.body
@@ -79,6 +80,7 @@ export const deleteBook = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Book not found' })
       return
     }
+    await Review.deleteMany({ book_id: id })
     res.status(200).json({ message: 'Book deleted' })
   } catch (e) {
     console.log('Error:', e)
