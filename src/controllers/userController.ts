@@ -29,6 +29,11 @@ export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { username, password } = req.body;
 
+  if (res.locals.userId !== id) {
+    res.status(403).json({ message: "You can only update your own account" });
+    return;
+  }
+
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -51,6 +56,11 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (res.locals.userId !== id) {
+    res.status(403).json({ message: "You can only delete your own account" });
+    return;
+  }
   try {
     const user = await User.findByIdAndDelete(id);
     if (!user) {

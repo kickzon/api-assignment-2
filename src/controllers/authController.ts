@@ -26,7 +26,7 @@ export const login = async (req: Request, res: Response) => {
 
     const isLoggedIn = await bcrypt.compare(password, hashedPassword)
     if (isLoggedIn) {
-        const accessToken = jwt.sign({username}, process.env.JWT_SECRET || "", {expiresIn: '7d'});
+        const accessToken = jwt.sign({ userId: user._id.toString() }, process.env.JWT_SECRET || "", {expiresIn: '7d'});
 
 
         res.cookie('accessToken', accessToken, {
