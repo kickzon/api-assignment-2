@@ -1,10 +1,6 @@
-// 1. FETCH GET to API_URL + "/greetings/admin" with credentials: "include". 
-// Use async/await and try/catch to handle the response and any errors that may occur. 
-// If the response is successful, display the data.message in #greeting
-
-async function fetchGreeting() {
+async function fetchUsers() {
     try {
-        const response = await fetch(API_URL + "/greetings/admin", {
+        const response = await fetch(API_URL + "/users", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -13,21 +9,36 @@ async function fetchGreeting() {
         });
 
         if  (response.status === 401 || response.status === 403) {
-            window.location.href = "index.html?message=You must be logged in to view this page";
+            window.location.href = "login.html";
+            return;
         }
 
         const data = await response.json();
-        console.log(response)
         if (response.ok) {
-            // 2. Display the data.message in #greeting in a green fashioned label. Use bootstraps classes
-            document.getElementById("greeting").className = "alert alert-success";
-            document.getElementById("greeting").textContent = data.message;
+            const usersList = document.getElementById("users-list");
+
+            data.forEach(function (user) {
+                const userElement = document.createElement("div");
+
+                const username = document.createElement("p");
+                username.textContent = `Username: ${user.username}`;
+
+                const isAdmin = document.createElement("p");
+                isAdmin.textContent = `Admin: ${user.is_admin}`;
+
+                const createdAt = document.createElement("p");
+                createdAt.textContent = `Created At: ${new Date(user.created_at).toLocaleString()}`;
+
+                userElement.append(username, isAdmin, createdAt);
+                usersList.appendChild(userElement);
+            });
+            
         }
     } catch (error) {
         console.error("Error:", error);
     }
 }
-fetchGreeting();
+fetchUsers();
 
 
 // 2. Create an addEventlistener for the logout button on click. The buttons ID is "#logout-btn"
@@ -43,16 +54,13 @@ document.getElementById("logout-btn").addEventListener("click", function(event) 
                 },
                 credentials: "include"
             });
-            const data = await response.json();
-            // 4. On success, redirect to login.html. On failure display an error message in #logout-message
             if (response.ok) {
                 window.location.href = "index.html";
             } else {
                 // 5. Make the error message display in a red fashioned label. Use bootstraps classes 
-                document.getElementById("logout-message").className = "alert alert-danger";
-                document.getElementById("logout-message").innerHTML = "Logout failed. Please try again";
+                document.getElementById("users-message").className = "alert alert-danger";
+                document.getElementById("users-message").textContent = "Logout failed. Please try again";
             }
-            console.log(data);
         } catch (error) {
             console.error("Error:", error);
         }
