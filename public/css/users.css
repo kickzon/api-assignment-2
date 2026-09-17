@@ -198,6 +198,23 @@ input:focus {
   outline-offset: 3px;
 }
 
+.back-link {
+  align-self: flex-start;
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.back-link:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
+}
+
 @media (max-width: 650px) {
   #users-list > div {
     grid-template-columns: 1fr;
