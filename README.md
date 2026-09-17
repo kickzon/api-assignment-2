@@ -9,6 +9,9 @@
 
 Detta är en gruppuppgift i kursen API-utveckling, där vi bygger ett Book API tillsammans med en klient som är lösenordsskyddat. Applikationen låter besökare bläddra bland böcker och skriva recensioner samt ger inloggade administratörer möjlighet att hantera användare och böcker.
 
+## 🌐 Live demo
+https://api-assignment-2-eosin.vercel.app/
+
 ## 👥 Gruppmedlemmar
 
 | Namn | GitHub | Ansvarsområde |
