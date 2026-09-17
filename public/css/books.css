@@ -151,8 +151,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 
-  background-color: var(--mustard);
-  /* border: 2px solid var(--mustard); */
+  background-color: #fff;
+  border: 2px solid var(--mustard);
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgb(144 81 46 / 15%);
 }
@@ -174,7 +174,7 @@
 }
 
 .create-book-form label {
-  color: var(--cinnamon);
+  color: var(--olive);
   font-family: var(--text);
   font-weight: 700;
 }
