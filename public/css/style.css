@@ -8,6 +8,19 @@
   --text: "Inter", sans-serif;
 }
 
+.home-page {
+  background-color: var(--background-color);
+  font-family: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: var(--H1);
+  font-size: 2.5rem;
+  color: var(--cinnamon);
+}
+
 .message {
   margin-top: 16px;
   padding: 12px;
@@ -22,4 +35,34 @@
 .message.success {
   background: #d1e7dd;
   color: #0f5132;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.home-login-link {
+  padding: 0.8rem 1.4rem;
+  border: 2px solid var(--cinnamon);
+  border-radius: 15px;
+  background-color: var(--cinnamon);
+  color: white;
+  font-family: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.home-login-link:hover {
+  background-color: transparent;
+  color: var(--cinnamon);
+}
+
+.home-login-link:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
 }
