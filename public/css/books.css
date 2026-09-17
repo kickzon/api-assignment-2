@@ -58,12 +58,15 @@
   }
 }
 
+#books-list {
+  margin-top: 5rem;
+}
+
 .books-table {
   width: min(100%, 900px);
   margin-top: 2rem;
   border-collapse: collapse;
   border-top: 2px solid var(--cinnamon);
-  padding-top: 5rem;
 }
 
 .books-table th,
