@@ -21,18 +21,17 @@
 }
 
 .books a:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgb(144 81 46 / 18%);
+  cursor: pointer;
 }
 
 .books h3 {
-  margin: 1rem 1rem 0.4rem;
+  margin: 1rem 0.5rem;
   color: var(--cinnamon);
   font-family: var(--H1);
   font-size: 1.3rem;
 }
 .books p {
-  margin: 0.25rem 1rem;
+  margin: 0.25rem 0.5rem;
   color: var(--olive);
   font-family: var(--text);
 }
