@@ -59,7 +59,10 @@
 }
 
 #books-list {
-  margin-top: 5rem;
+  width: min(100%, 900px);
+  margin: 5rem 0;
+  display: flex;
+  flex-direction: column;
 }
 
 #books-list h2 {
@@ -67,7 +70,7 @@
 }
 
 .books-table {
-  width: min(100%, 900px);
+  width: 100%;
   margin-top: 2rem;
   border-collapse: collapse;
   border-top: 2px solid var(--cinnamon);
@@ -115,6 +118,8 @@
 }
 
 .add-book-btn {
+  align-self: flex-end;
+  margin: 2rem 0;
   padding: 0.65rem 1.25rem;
   border: 2px solid var(--cinnamon);
   border-radius: 15px;
