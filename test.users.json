@@ -1,0 +1,84 @@
+[{
+  "_id": {
+    "$oid": "6aa2926bf02aacb1277b9f72"
+  },
+  "username": "helt-unikt-testnamn-123",
+  "password": "$2b$10$3f622KIZ8v64AjQHefcgeOr/yTe9cqVq7GEJ0puNijtndTdfBo2P6",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-10T11:20:11.236Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aa4006f243dde67df2881d8"
+  },
+  "username": "Angeleye",
+  "password": "$2b$10$15JPrA0ejW8/OFjf3mHhaOgWuhSvkyhnFeMB0S.LWL85rpDjSQfmi",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-11T13:21:51.152Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aa5564efcda3acdbef7d74e"
+  },
+  "username": "test",
+  "password": "$2b$10$Tp0r45WRdu6YDsZE8Y48GO5Sdo0RVvzsDygUGC124xGqMfnIg81jW",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-12T13:40:30.573Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aa8eec5ceac72b368940631"
+  },
+  "username": "Kickzon",
+  "password": "$2b$10$3xEyYHwWR13dWUsHLPuYPO9aYx2.BAY4EpBTzEDSUXjR24iP.8oPO",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-15T07:07:49.312Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aaa8ccefe16b814f175d465"
+  },
+  "username": "tester1 - updateed",
+  "password": "$2b$10$n.VxNNUCsXtxotXpvzQeOefAB.CHSwzRvx0mHo4F.6btCiaw0L8BO",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-16T12:34:22.611Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aab967281c15c27d907048e"
+  },
+  "username": "Angelie",
+  "password": "$2b$10$/NQNc5obwI48H6FEYCpMTe77Gqgra8kP89dsBXuztCsM79VbQ8Vrm",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-17T07:27:46.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6aab9f7681629536f2c092a9"
+  },
+  "username": "ikis",
+  "password": "$2b$10$2gJ.YQILbglNAllNUyAl3edFCMjVwu0re1q987cEixhTAkk3nGbHq",
+  "is_admin": false,
+  "created_at": {
+    "$date": "2026-09-17T08:06:14.080Z"
+  },
+  "__v": 0
+}]
