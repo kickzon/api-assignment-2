@@ -1,12 +1,13 @@
 const addBookBtn = document.querySelector('.add-book-btn')
 const bookForm = document.querySelector('.create-book-form')
+const modal = document.querySelector('.modal')
 
 addBookBtn.addEventListener('click', showForm)
 bookForm.addEventListener('submit', addBook)
 
 function showForm() {
   bookForm.reset()
-  bookForm.classList.remove('hidden')
+  modal.classList.remove('hidden')
   addBookBtn.classList.add('hidden')
 }
 
