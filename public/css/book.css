@@ -1,0 +1,213 @@
+body {
+  background-color: var(--background-color);
+  color: #333;
+  font-family: var(--text);
+}
+
+#book-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.book-layout {
+  display: flex;
+  gap: 2.5rem;              
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+
+.book-image img {
+  width: 220px;           
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+.book-info {
+  flex: 1;
+}
+
+.book-info h1 {
+  font-family: var(--H1);
+  color: var(--cinnamon);
+  margin: 0 0 0.15rem;
+  font-size: 1.6rem;
+}
+
+.book-info h2 {
+  font-family: var(--text);
+  color: var(--olive);       
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem;
+}
+
+.rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--olive);
+  margin-bottom: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--text);
+}
+
+.rating-summary:hover {
+  text-decoration: underline;
+}
+
+.stars {
+  color: var(--mustard);
+  letter-spacing: 1px;
+}
+
+.rating-number {
+  font-weight: 700;
+  color: #333;
+}
+
+.book-info p {
+  color: var(--olive);    
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+}
+
+.genre-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.genre-tag {
+  background-color: white;
+  border: 1px solid var(--mustard);
+  border-radius: 20px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  color: var(--cinnamon);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--cinnamon);
+  text-decoration: none;
+}
+
+.reviews-section {
+  border-top: 1px solid #ddd;
+  padding-top: 1.5rem;
+}
+
+.reviews-section h2 {
+  font-family: var(--H1);
+  color: var(--cinnamon);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.toggle-form-btn {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--cinnamon);
+  border-radius: 20px;
+  background-color: transparent;
+  color: var(--cinnamon);
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.toggle-form-btn:hover {
+  background-color: var(--cinnamon);
+  color: white;
+}
+
+.review-form {
+  max-width: 320px;
+  padding: 0.9rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: white;
+  border: 1px solid var(--mustard);
+  border-radius: 0.6rem;
+}
+
+.review-form.hidden {
+  display: none;
+}
+
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: var(--text);
+  font-size: 0.85rem;
+}
+
+.review-form textarea {
+  min-height: 50px;
+  resize: vertical;
+}
+
+.review-form button {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--cinnamon);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.review-card {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.review-card p {
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+}
+
+.review-card small {
+  color: #999;
+  font-size: 0.75rem;
+}
+
+.show-more-btn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--mustard);
+  border-radius: 20px;
+  background-color: white;
+  color: var(--cinnamon);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  background-color: var(--mustard);
+  color: white;
+}
