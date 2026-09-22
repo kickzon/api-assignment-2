@@ -42,17 +42,22 @@ function renderPublicBooks(data) {
   element.innerHTML = data
     .map(
       (book) => `
-  <div>
-  <a href='book.html?id=${book._id}'>
-  <img 
-  src='${book.image}' 
-  alt='${book.title}'>
-  <h3>${book.title}</h3>
-  </a>
-  <p>${book.author}</p>
-  <p>${book.published_year}</p>
-  <p>${book.genres}</p>
-  </div>`,
+  <article class="book-card">
+    <a href="book.html?id=${book._id}" class="book-card-link">
+      <img
+        class="book-cover"
+        src="${book.image}"
+        alt="Omslag till ${book.title}"
+      >
+      <h3>${book.title}</h3>
+    </a>
+
+    <div class="book-info">
+      <p class="book-author">${book.author}</p>
+      <p>${book.published_year}</p>
+      <p>${book.genres}</p>
+    </div>
+  </article>`,
     )
     .join('')
 }

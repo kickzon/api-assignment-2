@@ -259,3 +259,44 @@
     grid-column: auto;
   }
 }
+
+.book-card {
+  overflow: hidden;
+  border: 1px solid rgb(144 81 46 / 20%);
+  border-radius: 16px;
+  background-color: rgb(255 255 255 / 35%);
+  box-shadow: 0 8px 20px rgb(144 81 46 / 10%);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgb(144 81 46 / 20%);
+}
+
+.book-cover {
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover {
+  transform: scale(1.03);
+}
+
+.book-card-link {
+  display: block;
+}
+
+.book-card-link:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: -3px;
+}
+
+.book-info {
+  padding: 0 0.75rem 1rem;
+}
+
+.book-author {
+  font-weight: 700;
+}
