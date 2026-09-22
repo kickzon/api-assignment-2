@@ -15,7 +15,7 @@
   padding: 0;
 }
 
-h1 {
+.home-header h1 {
   font-family: var(--H1);
   font-size: 2.5rem;
   color: var(--cinnamon);
@@ -65,4 +65,33 @@ h1 {
 .home-login-link:focus-visible {
   outline: 3px solid var(--mustard);
   outline-offset: 3px;
+}
+
+.home-intro-text {
+  max-width: 700px;
+  margin: 5rem auto;
+  text-align: center;
+}
+
+.home-intro-text h2 {
+  margin-bottom: 1rem;
+  color: var(--cinnamon);
+  font-family: var(--H1);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.home-intro-text p {
+  margin: 0;
+  color: var(--olive);
+  font-family: var(--text);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+#books-heading {
+  margin: 0 0 2rem;
+  color: var(--cinnamon);
+  font-family: var(--H1);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  text-align: center;
 }
