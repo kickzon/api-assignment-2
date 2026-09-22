@@ -112,10 +112,6 @@ input:focus {
   outline-offset: 3px;
 }
 
-.container {
-  width: min(100%, 1100px);
-}
-
 #users-list {
   width: min(100%, 900px);
   margin-top: 2rem;
@@ -213,6 +209,21 @@ input:focus {
 .back-link:focus-visible {
   outline: 3px solid var(--mustard);
   outline-offset: 3px;
+}
+
+.auth-page {
+  padding: 0;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0;
+}
+
+.auth-main {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
 @media (max-width: 650px) {
