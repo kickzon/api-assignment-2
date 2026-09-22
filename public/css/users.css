@@ -232,3 +232,14 @@ input:focus {
     gap: 0.35rem;
   }
 }
+
+.role-button {
+  border-color: var(--mustard);
+  background-color: var(--mustard);
+  color: var(--cinnamon);
+}
+
+.role-button:hover {
+  background-color: transparent;
+  color: var(--cinnamon);
+}
