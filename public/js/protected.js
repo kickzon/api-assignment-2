@@ -1,5 +1,7 @@
 const message = document.getElementById("users-message");
 const usersList = document.getElementById("users-list");
+const pageTitle = document.getElementById("page-title");
+const adminTools = document.getElementById("admin-tools");
 
 function showMessage(text) {
     message.textContent = text;
@@ -24,22 +26,38 @@ async function fetchUsers() {
 
         const currentUser = await meResponse.json();
 
-        // Hämta alla användare
-        const usersResponse = await fetch(API_URL + "/users", {
-            credentials: "include"
-        });
+        // Visa olika innehåll beroende på användarens roll
+        let users = [currentUser];
 
-        if (usersResponse.status === 401 || usersResponse.status === 403) {
-            window.location.href = "login.html";
-            return;
+        if (currentUser.is_admin) {
+            pageTitle.textContent = "Adminpanel";
+            adminTools.classList.remove("hidden");
+
+            const usersResponse = await fetch(API_URL + "/users", {
+                credentials: "include",
+            });
+
+            if (usersResponse.status === 401) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (usersResponse.status === 403) {
+                adminTools.classList.add("hidden");
+                showMessage("Du har inte adminbehörighet.");
+                return;
+            }
+
+            if (!usersResponse.ok) {
+                showMessage("Kunde inte hämta användarna.");
+                return;
+            }
+
+            users = await usersResponse.json();
+        } else {
+            pageTitle.textContent = "Mitt konto";
+            adminTools.classList.add("hidden");
         }
-
-        if (!usersResponse.ok) {
-            showMessage("Could not load users.");
-            return;
-        }
-
-        const users = await usersResponse.json();
         usersList.replaceChildren();
 
         users.forEach(function (user) {
@@ -61,6 +79,8 @@ async function fetchUsers() {
 
             if (isOwnAccount) {
                 addAccountButtons(userElement, user);
+            } else if (currentUser.is_admin) {
+                addRoleButton(userElement, user);
             }
 
             usersList.appendChild(userElement);
@@ -69,6 +89,77 @@ async function fetchUsers() {
         showMessage("Something went wrong while loading users.");
         console.error("Error loading users:", error);
     }
+}
+
+function addRoleButton(userElement, user) {
+    const actions = document.createElement("div");
+    actions.className = "user-actions";
+
+    const roleButton = document.createElement("button");
+    roleButton.type = "button";
+    roleButton.className = "account-button role-button";
+    roleButton.textContent = user.is_admin
+        ? "Ta bort adminroll"
+        : "Gör till admin";
+
+    roleButton.addEventListener("click", async function () {
+        const newAdminStatus = !user.is_admin;
+
+        const confirmed = window.confirm(
+            newAdminStatus
+                ? `Vill du göra ${user.username} till admin?`
+                : `Vill du ta bort adminrollen från ${user.username}?`,
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                API_URL + "/users/" + user._id + "/role",
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        is_admin: newAdminStatus,
+                    }),
+                },
+            );
+
+            if (response.status === 401) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (response.status === 403) {
+                showMessage("Du har inte behörighet att ändra roller.");
+                return;
+            }
+
+            if (!response.ok) {
+                showMessage("Det gick inte att ändra användarens roll.");
+                return;
+            }
+
+            showMessage(
+                newAdminStatus
+                    ? `${user.username} är nu admin.`
+                    : `${user.username} är inte längre admin.`,
+            );
+
+            await fetchUsers();
+        } catch (error) {
+            showMessage("Kunde inte ansluta till servern.");
+            console.error("Error updating user role:", error);
+        }
+    });
+
+    actions.appendChild(roleButton);
+    userElement.appendChild(actions);
 }
 
 function addAccountButtons(userElement, user) {

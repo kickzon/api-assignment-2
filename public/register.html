@@ -1,31 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/users.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Bungee+Hairline&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/users.css" />
+  </head>
+  <body class="auth-page">
+    <div class="container">
+      <header class="site-header">
+        <a href="index.html" class="site-logo">Bokmärkt</a>
 
-    <form id="register-form">
+        <nav aria-label="Huvudnavigation">
+          <ul class="nav-list">
+            <li><a href="index.html">Hem</a></li>
+            <li><a href="index.html#books-heading">Böcker</a></li>
+            <li><a href="register.html">Skapa konto</a></li>
+            <li>
+              <a href="login.html" class="nav-login-link">Logga in</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <main class="auth-main">
+      <form id="register-form">
         <h2>Register</h2>
         <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required />
         </div>
         <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required />
         </div>
         <button type="submit" id="register-btn">Register</button>
         <div id="register-message"></div>
-    </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </form>
+    </main>
 
-    <p> Already have an account? <a href="login.html">Login</a> </p>
-    
     <script src="js/functions.js"></script>
     <script src="js/register.js"></script>
-</body>
+  </body>
 </html>
