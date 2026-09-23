@@ -32,11 +32,14 @@
 }
 
 .site-logo {
-  color: var(--cinnamon);
-  font-family: var(--H1);
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-decoration: none;
+  display: inline-block;
+  line-height: 0;
+}
+
+.site-logo-image {
+  display: block;
+  width: clamp(180px, 22vw, 260px);
+  height: auto;
 }
 
 .nav-list {
