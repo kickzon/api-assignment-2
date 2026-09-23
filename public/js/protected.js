@@ -2,6 +2,7 @@ const message = document.getElementById("users-message");
 const usersList = document.getElementById("users-list");
 const pageTitle = document.getElementById("page-title");
 const adminTools = document.getElementById("admin-tools");
+const accountNavLink = document.getElementById("account-nav-link");
 
 function showMessage(text) {
     message.textContent = text;
@@ -31,6 +32,8 @@ async function fetchUsers() {
 
         if (currentUser.is_admin) {
             pageTitle.textContent = "Adminpanel";
+            document.title = "Bokmärkt – Adminpanel";
+            accountNavLink.textContent = "Adminpanel";
             adminTools.classList.remove("hidden");
 
             const usersResponse = await fetch(API_URL + "/users", {
@@ -56,6 +59,8 @@ async function fetchUsers() {
             users = await usersResponse.json();
         } else {
             pageTitle.textContent = "Mitt konto";
+            document.title = "Bokmärkt – Mitt konto";
+            accountNavLink.textContent = "Mitt konto";
             adminTools.classList.add("hidden");
         }
         usersList.replaceChildren();
