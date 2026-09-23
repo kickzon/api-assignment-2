@@ -89,13 +89,15 @@ input:focus {
 }
 
 #logout-btn {
-  padding: 0.65rem 1.25rem;
+  padding: 0.8rem 1.4rem;
   border: 2px solid var(--cinnamon);
   border-radius: 15px;
   background-color: transparent;
   color: var(--cinnamon);
   font-family: var(--text);
+  font-size: 1rem;
   font-weight: 700;
+  line-height: 1.2;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
