@@ -2,3 +2,7 @@ node_modules
 .package-lock.json
 .DS_Store
 .env
+# Database exports
+/test.books.json
+/test.reviews.json
+/test.users.json
