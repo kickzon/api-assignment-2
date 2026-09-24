@@ -16,6 +16,8 @@ function starString(rating) {
 }
 
 function renderBook(book) {
+  document.title = `Bokmärkt – ${book.title}`
+
   const avgRating = book.reviews.length
     ? (book.reviews.reduce((sum, r) => sum + r.rating, 0) / book.reviews.length).toFixed(2)
     : null
@@ -26,7 +28,7 @@ function renderBook(book) {
   container.innerHTML = `
     <div class="book-layout">
       <div class="book-image">
-        <img src="${book.image}" alt="${book.title}">
+        <img src="${book.image}" alt="Omslag till ${book.title}">
       </div>
 
       <div class="book-info">

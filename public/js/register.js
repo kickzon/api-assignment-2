@@ -1,4 +1,4 @@
-document.getElementById("register-form").addEventListener("submit", function(event) {
+document.getElementById("register-form").addEventListener("submit", function (event) {
     event.preventDefault();
 
     const username = document.getElementById("username").value.trim();
@@ -21,19 +21,23 @@ document.getElementById("register-form").addEventListener("submit", function(eve
                 }),
                 credentials: "include"
             });
-            const data = await response.json();
             // 4 On success, redirect to login.html. On failure display an error message in #register-message
             if (response.ok) {
                 window.location.href = "login.html";
             } else {
                 // 5. Make the error message display in a red fashioned label. Use bootstraps classes
-                document.getElementById("register-message").className = "alert alert-danger";
-                document.getElementById("register-message").textContent = "Registration failed. Please try again.";
+                document.getElementById("register-message").className =
+                    "alert alert-danger";
+
+                document.getElementById("register-message").textContent =
+                    response.status === 409
+                        ? "Användarnamnet är redan upptaget."
+                        : "Registreringen misslyckades. Försök igen.";
             }
         } catch (error) {
             document.getElementById("register-message").className = "alert alert-danger";
-            document.getElementById("register-message").textContent = "An error occurred. Please try again.";
-            console.error("Error:", error);
+            document.getElementById("register-message").textContent =
+                "Det gick inte att ansluta till servern.";
         }
     }
     register();
