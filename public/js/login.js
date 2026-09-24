@@ -1,4 +1,4 @@
-document.getElementById("login-form").addEventListener("submit", function(event) {
+document.getElementById("login-form").addEventListener("submit", function (event) {
     event.preventDefault();
 
     const username = document.getElementById("username").value.trim();
@@ -28,9 +28,13 @@ document.getElementById("login-form").addEventListener("submit", function(event)
             } else {
                 // 5. Make the error message display in a red fashioned label. Use bootstraps classes 
                 document.getElementById("login-message").className = "alert alert-danger";
-                document.getElementById("login-message").innerHTML = "Login failed. Please check your credentials";
+                document.getElementById("login-message").textContent =
+                    "Inloggningen misslyckades. Kontrollera användarnamn och lösenord.";
             }
         } catch (error) {
+            document.getElementById("login-message").className = "alert alert-danger";
+            document.getElementById("login-message").textContent =
+                "Det gick inte att ansluta till servern.";
             console.error("Error:", error);
         }
     }

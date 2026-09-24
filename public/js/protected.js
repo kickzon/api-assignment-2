@@ -21,7 +21,7 @@ async function fetchUsers() {
         }
 
         if (!meResponse.ok) {
-            showMessage("Could not load your account.");
+            showMessage("Det gick inte att hämta ditt konto.");
             return;
         }
 
@@ -71,14 +71,15 @@ async function fetchUsers() {
             const username = document.createElement("p");
             const isOwnAccount = user._id === currentUser._id;
             username.textContent =
-                `Username: ${user.username}${isOwnAccount ? " (you)" : ""}`;
+                `Användarnamn: ${user.username}${isOwnAccount ? " (du)" : ""}`;
 
             const isAdmin = document.createElement("p");
-            isAdmin.textContent = `Admin: ${user.is_admin}`;
+            isAdmin.textContent =
+                `Roll: ${user.is_admin ? "Administratör" : "Användare"}`;
 
             const createdAt = document.createElement("p");
             createdAt.textContent =
-                `Created At: ${new Date(user.created_at).toLocaleString("sv-SE")}`;
+                `Skapad: ${new Date(user.created_at).toLocaleString("sv-SE")}`;
 
             userElement.append(username, isAdmin, createdAt);
 
@@ -91,7 +92,7 @@ async function fetchUsers() {
             usersList.appendChild(userElement);
         });
     } catch (error) {
-        showMessage("Something went wrong while loading users.");
+        showMessage("Något gick fel när användarna laddades.");
         console.error("Error loading users:", error);
     }
 }
@@ -174,12 +175,12 @@ function addAccountButtons(userElement, user) {
     const updateButton = document.createElement("button");
     updateButton.className = "account-button update-button";
     updateButton.type = "button";
-    updateButton.textContent = "Update Account";
+    updateButton.textContent = "Uppdatera konto";
 
     const deleteButton = document.createElement("button");
     deleteButton.className = "account-button delete-button";
     deleteButton.type = "button";
-    deleteButton.textContent = "Delete Account";
+    deleteButton.textContent = "Radera konto";
 
     updateButton.addEventListener("click", function () {
         // Undvik att öppna flera formulär på samma rad
@@ -194,7 +195,7 @@ function addAccountButtons(userElement, user) {
         updateForm.className = "update-form";
 
         const usernameLabel = document.createElement("label");
-        usernameLabel.textContent = "Username";
+        usernameLabel.textContent = "Användarnamn";
 
         const usernameInput = document.createElement("input");
         usernameInput.type = "text";
@@ -203,7 +204,7 @@ function addAccountButtons(userElement, user) {
         usernameLabel.appendChild(usernameInput);
 
         const passwordLabel = document.createElement("label");
-        passwordLabel.textContent = "New password (optional)";
+        passwordLabel.textContent = "Nytt lösenord (valfritt)";
 
         const passwordInput = document.createElement("input");
         passwordInput.type = "password";
@@ -212,7 +213,7 @@ function addAccountButtons(userElement, user) {
         const saveButton = document.createElement("button");
         saveButton.className = "account-button save-button";
         saveButton.type = "submit";
-        saveButton.textContent = "Save changes";
+        saveButton.textContent = "Spara ändringar";
 
         updateForm.append(
             usernameLabel,
@@ -227,7 +228,7 @@ function addAccountButtons(userElement, user) {
             const newPassword = passwordInput.value;
 
             if (!newUsername) {
-                showMessage("Username cannot be empty.");
+                showMessage("Användarnamn kan inte vara tomt.");
                 return;
             }
 
@@ -242,7 +243,7 @@ function addAccountButtons(userElement, user) {
             }
 
             if (Object.keys(changes).length === 0) {
-                showMessage("No changes to save.");
+                showMessage("Det finns inga ändringar att spara.");
                 return;
             }
 
@@ -259,16 +260,16 @@ function addAccountButtons(userElement, user) {
                 if (!response.ok) {
                     showMessage(
                         response.status === 409
-                            ? "Username is already taken."
-                            : "Could not update your account."
+                            ? "Användarnamn är redan taget."
+                            : "Det gick inte att uppdatera kontot."
                     );
                     return;
                 }
 
-                showMessage("Account updated.");
+                showMessage("Kontot uppdaterat.");
                 await fetchUsers();
             } catch (error) {
-                showMessage("Could not connect to the server.");
+                showMessage("Det gick inte att ansluta till servern.");
                 console.error("Error updating account:", error);
             }
         });
@@ -278,7 +279,7 @@ function addAccountButtons(userElement, user) {
 
     deleteButton.addEventListener("click", async function () {
         const confirmed = window.confirm(
-            "Are you sure you want to delete your account?"
+            "Är du säker på att du vill radera ditt konto?"
         );
 
         if (!confirmed) {
@@ -295,7 +296,7 @@ function addAccountButtons(userElement, user) {
             );
 
             if (!deleteResponse.ok) {
-                showMessage("Could not delete your account.");
+                showMessage("Det gick inte att radera kontot.");
                 return;
             }
 
@@ -310,14 +311,14 @@ function addAccountButtons(userElement, user) {
 
             if (!logoutResponse.ok) {
                 showMessage(
-                    "Account deleted, but logout failed. Please try logging out."
+                    "Kontot raderades, men utloggning misslyckades. Försök logga ut igen."
                 );
                 return;
             }
 
             window.location.href = "index.html";
         } catch (error) {
-            showMessage("Could not connect to the server.");
+            showMessage("Det gick inte att ansluta till servern.");
             console.error("Error deleting account:", error);
         }
     });
@@ -342,9 +343,9 @@ document.getElementById("logout-btn").addEventListener(
                 return;
             }
 
-            showMessage("Logout failed. Please try again.");
+            showMessage("Utloggning misslyckades. Försök logga ut igen.");
         } catch (error) {
-            showMessage("Could not connect to the server.");
+            showMessage("Det gick inte att ansluta till servern.");
             console.error("Error logging out:", error);
         }
     }
