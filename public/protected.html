@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/users.css" />
     <link rel="stylesheet" href="css/books.css" />
+    <link rel="stylesheet" href="css/admin-reviews.css" />
   </head>
   <body>
     <div class="container">
@@ -48,11 +49,7 @@
       <h1 id="page-title">Mitt konto</h1>
       <p id="users-message"></p>
       <div id="users-list"></div>
-      <section
-        id="admin-tools"
-        class="hidden"
-        aria-labelledby="admin-books-heading"
-      >
+      <section id="admin-tools" class="hidden" aria-label="Adminverktyg">
         <div id="books-list">
           <h2 id="admin-books-heading">Böcker</h2>
           <table class="books-table">
@@ -68,6 +65,27 @@
           </table>
           <button type="button" class="add-book-btn">Lägg till ny bok</button>
         </div>
+
+        <div id="admin-reviews">
+          <h2>Recensioner</h2>
+
+          <p id="reviews-message" aria-live="polite"></p>
+
+          <table class="reviews-table">
+            <thead>
+              <tr>
+                <th>Bok</th>
+                <th>Namn</th>
+                <th>Betyg</th>
+                <th>Recension</th>
+                <th>Skapad</th>
+                <th>Åtgärd</th>
+              </tr>
+            </thead>
+            <tbody id="admin-reviews-list"></tbody>
+          </table>
+        </div>
+
         <div class="modal hidden">
           <form class="create-book-form">
             <div class="form-group">
@@ -111,6 +129,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/functions.js"></script>
+    <script src="js/admin-reviews.js"></script>
     <script src="js/protected.js"></script>
     <script src="js/books.js"></script>
     <script src="js/form.js"></script>

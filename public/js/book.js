@@ -5,9 +5,35 @@ const REVIEWS_PER_PAGE = 2
 let visibleCount = REVIEWS_PER_PAGE
 
 async function getBook() {
-  const response = await fetch(`${API_URL}/books/${bookId}`)
-  const book = await response.json()
-  renderBook(book)
+  const statusElement = document.querySelector('#book-status')
+
+  if (!bookId) {
+    statusElement.textContent = 'Ingen bok har valts.'
+    statusElement.classList.add('error')
+    return
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/books/${bookId}`)
+
+    if (response.status === 404) {
+      statusElement.textContent = 'Boken kunde inte hittas.'
+      statusElement.classList.add('error')
+      return
+    }
+
+    if (!response.ok) {
+      throw new Error('Could not fetch book')
+    }
+
+    const book = await response.json()
+    renderBook(book)
+  } catch (error) {
+    console.error('Error fetching book:', error)
+    statusElement.textContent =
+      'Det gick inte att hämta boken. Försök igen senare.'
+    statusElement.classList.add('error')
+  }
 }
 
 function starString(rating) {
@@ -58,6 +84,8 @@ function renderBook(book) {
         <button type="submit">Skicka</button>
       </form>
 
+      <p id="review-status" class="review-status" aria-live="polite"></p>
+
       <div id="reviews-list"></div>
       <button id="show-more-btn" class="show-more-btn">Visa fler</button>
     </div>
@@ -75,6 +103,13 @@ function renderBook(book) {
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
 
+    const statusElement = document.querySelector('#review-status')
+    const submitButton = form.querySelector('button[type="submit"]')
+
+    statusElement.textContent = 'Recensionen skickas...'
+    statusElement.className = 'review-status'
+    submitButton.disabled = true
+
     const formData = new FormData(form)
     const newReview = {
       name: formData.get('name'),
@@ -83,14 +118,31 @@ function renderBook(book) {
       book_id: bookId,
     }
 
-    await fetch(`${API_URL}/reviews`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newReview),
-    })
+    try {
+      const response = await fetch(`${API_URL}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview),
+      })
 
-    visibleCount = REVIEWS_PER_PAGE
-    getBook()
+      if (!response.ok) {
+        throw new Error('Could not create review')
+      }
+
+      form.reset()
+      visibleCount = REVIEWS_PER_PAGE
+      await getBook()
+
+      const updatedStatusElement = document.querySelector('#review-status')
+      updatedStatusElement.textContent = 'Recensionen har sparats!'
+      updatedStatusElement.classList.add('success')
+    } catch (error) {
+      console.error('Error creating review:', error)
+      statusElement.textContent =
+        'Det gick inte att spara recensionen. Försök igen.'
+      statusElement.classList.add('error')
+      submitButton.disabled = false
+    }
   })
 }
 

@@ -57,6 +57,7 @@ async function fetchUsers() {
             }
 
             users = await usersResponse.json();
+            await loadAdminReviews(); // Ladda recensioner om användaren är admin
         } else {
             pageTitle.textContent = "Mitt konto";
             document.title = "Bokmärkt – Mitt konto";
