@@ -5,9 +5,35 @@ const REVIEWS_PER_PAGE = 2
 let visibleCount = REVIEWS_PER_PAGE
 
 async function getBook() {
-  const response = await fetch(`${API_URL}/books/${bookId}`)
-  const book = await response.json()
-  renderBook(book)
+  const statusElement = document.querySelector('#book-status')
+
+  if (!bookId) {
+    statusElement.textContent = 'Ingen bok har valts.'
+    statusElement.classList.add('error')
+    return
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/books/${bookId}`)
+
+    if (response.status === 404) {
+      statusElement.textContent = 'Boken kunde inte hittas.'
+      statusElement.classList.add('error')
+      return
+    }
+
+    if (!response.ok) {
+      throw new Error('Could not fetch book')
+    }
+
+    const book = await response.json()
+    renderBook(book)
+  } catch (error) {
+    console.error('Error fetching book:', error)
+    statusElement.textContent =
+      'Det gick inte att hämta boken. Försök igen senare.'
+    statusElement.classList.add('error')
+  }
 }
 
 function starString(rating) {

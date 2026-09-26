@@ -3,10 +3,16 @@ const BOOKS_PATH = '/books'
 async function fetchBooks() {
   try {
     const response = await fetch(API_URL + BOOKS_PATH)
+
+    if (!response.ok) {
+      throw new Error('Could not fetch books')
+    }
+
     const data = await response.json()
     return data
-  } catch (e) {
-    console.error('Error:', e)
+  } catch (error) {
+    console.error('Error fetching books:', error)
+    return null
   }
 }
 
@@ -80,12 +86,38 @@ function renderAdminBooks(data) {
 }
 
 async function initPublicBooks() {
+  const booksElement = document.querySelector('.books')
+  const statusElement = document.querySelector('#books-status')
+
+  if (!booksElement) return
+
   const data = await fetchBooks()
+
+  if (!data) {
+    statusElement.textContent =
+      'Det gick inte att hämta böckerna. Försök igen senare.'
+    statusElement.classList.add('error')
+    return
+  }
+
+  if (data.length === 0) {
+    statusElement.textContent = 'Det finns inga böcker att visa ännu.'
+    return
+  }
+
+  statusElement.hidden = true
   renderPublicBooks(data)
 }
 
 async function initAdminBooks() {
+  const tableBody = document.querySelector('.books-table-body')
+
+  if (!tableBody) return
+
   const data = await fetchBooks()
+
+  if (!data) return
+
   renderAdminBooks(data)
 }
 

@@ -211,3 +211,19 @@ body {
   background-color: var(--mustard);
   color: white;
 }
+
+.book-status {
+  margin: 3rem auto;
+  color: var(--olive);
+  font-family: var(--text);
+  text-align: center;
+}
+
+.book-status.error {
+  max-width: 700px;
+  padding: 1rem;
+  border: 1px solid var(--cinnamon);
+  border-radius: 12px;
+  background-color: rgb(144 81 46 / 10%);
+  color: var(--cinnamon);
+}
