@@ -84,6 +84,8 @@ function renderBook(book) {
         <button type="submit">Skicka</button>
       </form>
 
+      <p id="review-status" class="review-status" aria-live="polite"></p>
+
       <div id="reviews-list"></div>
       <button id="show-more-btn" class="show-more-btn">Visa fler</button>
     </div>
@@ -101,6 +103,13 @@ function renderBook(book) {
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
 
+    const statusElement = document.querySelector('#review-status')
+    const submitButton = form.querySelector('button[type="submit"]')
+
+    statusElement.textContent = 'Recensionen skickas...'
+    statusElement.className = 'review-status'
+    submitButton.disabled = true
+
     const formData = new FormData(form)
     const newReview = {
       name: formData.get('name'),
@@ -109,14 +118,31 @@ function renderBook(book) {
       book_id: bookId,
     }
 
-    await fetch(`${API_URL}/reviews`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newReview),
-    })
+    try {
+      const response = await fetch(`${API_URL}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview),
+      })
 
-    visibleCount = REVIEWS_PER_PAGE
-    getBook()
+      if (!response.ok) {
+        throw new Error('Could not create review')
+      }
+
+      form.reset()
+      visibleCount = REVIEWS_PER_PAGE
+      await getBook()
+
+      const updatedStatusElement = document.querySelector('#review-status')
+      updatedStatusElement.textContent = 'Recensionen har sparats!'
+      updatedStatusElement.classList.add('success')
+    } catch (error) {
+      console.error('Error creating review:', error)
+      statusElement.textContent =
+        'Det gick inte att spara recensionen. Försök igen.'
+      statusElement.classList.add('error')
+      submitButton.disabled = false
+    }
   })
 }
 
