@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import User from "../models/user";
 
 export const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body ?? {};
   if (username === undefined || password === undefined) {
     res.status(400).json({ message: "username and password are required" });
     return;
@@ -15,7 +15,16 @@ export const login = async (req: Request, res: Response) => {
     return;
   }
 
-  const user = await User.findOne({ username: username });
+  const normalizedUsername = username.trim();
+
+  if (!normalizedUsername || !password) {
+    res.status(400).json({
+      message: "username and password are required",
+    });
+    return;
+  }
+
+  const user = await User.findOne({ username: normalizedUsername });
 
   if (!user) {
     res.status(401).json({ message: "username/password are wrong" });
@@ -70,10 +79,7 @@ export const register = async (req: Request, res: Response) => {
 
   const normalizedUsername = username.trim();
 
-  if (
-    normalizedUsername.length < 3 ||
-    normalizedUsername.length > 30
-  ) {
+  if (normalizedUsername.length < 3 || normalizedUsername.length > 30) {
     res.status(400).json({
       message: "username must contain between 3 and 30 characters",
     });

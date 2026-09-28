@@ -106,6 +106,7 @@ input.invalid:focus {
   outline-offset: 3px;
 }
 
+#login-btn:disabled,
 #register-btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
