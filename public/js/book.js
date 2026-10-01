@@ -41,6 +41,83 @@ function starString(rating) {
   return '★'.repeat(rounded) + '☆'.repeat(5 - rounded)
 }
 
+// Visar ett valideringsfel vid ett fält i recensionsformuläret.
+function showReviewFieldError(input, errorElement, message) {
+  errorElement.textContent = message
+  input.classList.add('invalid')
+  input.setAttribute('aria-invalid', 'true')
+}
+
+// Tar bort ett valideringsfel när användaren rättar fältet.
+function clearReviewFieldError(input, errorElement) {
+  errorElement.textContent = ''
+  input.classList.remove('invalid')
+  input.removeAttribute('aria-invalid')
+}
+
+// Kontrollerar recensionen och returnerar de rensade värdena.
+function validateReviewForm(form) {
+  const nameInput = form.querySelector('#review-name')
+  const contentInput = form.querySelector('#review-content')
+  const ratingInput = form.querySelector('#review-rating')
+
+  const nameError = form.querySelector('#review-name-error')
+  const contentError = form.querySelector('#review-content-error')
+  const ratingError = form.querySelector('#review-rating-error')
+
+  const name = nameInput.value.trim()
+  const content = contentInput.value.trim()
+  const rating = Number(ratingInput.value)
+  let isValid = true
+
+  clearReviewFieldError(nameInput, nameError)
+  clearReviewFieldError(contentInput, contentError)
+  clearReviewFieldError(ratingInput, ratingError)
+
+  if (name.length < 2) {
+    showReviewFieldError(
+      nameInput,
+      nameError,
+      'Namnet måste innehålla minst 2 tecken.',
+    )
+    isValid = false
+  }
+
+  if (content.length < 10) {
+    showReviewFieldError(
+      contentInput,
+      contentError,
+      'Recensionen måste innehålla minst 10 tecken.',
+    )
+    isValid = false
+  }
+
+  if (
+    !ratingInput.value ||
+    !Number.isInteger(rating) ||
+    rating < 1 ||
+    rating > 5
+  ) {
+    showReviewFieldError(
+      ratingInput,
+      ratingError,
+      'Betyget måste vara ett heltal mellan 1 och 5.',
+    )
+    isValid = false
+  }
+
+  if (!isValid) {
+    form.querySelector('.invalid').focus()
+    return null
+  }
+
+  return {
+    name,
+    content,
+    rating,
+  }
+}
+
 function renderBook(book) {
   document.title = `Bokmärkt – ${book.title}`
 
@@ -77,12 +154,64 @@ function renderBook(book) {
       <h2>Recensioner</h2>
 
       <button id="toggle-form-btn" class="toggle-form-btn">Skriv en recension</button>
-      <form id="review-form" class="review-form hidden">
-        <input type="text" name="name" placeholder="Ditt namn" required>
-        <textarea name="content" placeholder="Din recension" required></textarea>
-        <input type="number" name="rating" min="1" max="5" placeholder="Betyg (1-5)" required>
-        <button type="submit">Skicka</button>
-      </form>
+      <form id="review-form" class="review-form hidden" novalidate>
+      <div class="review-form-group">
+        <label for="review-name">Ditt namn</label>
+        <input
+          type="text"
+          id="review-name"
+          name="name"
+          minlength="2"
+          maxlength="50"
+          autocomplete="name"
+          aria-describedby="review-name-error"
+          required
+        >
+        <p
+          id="review-name-error"
+          class="review-field-error"
+          aria-live="polite"
+        ></p>
+      </div>
+
+    <div class="review-form-group">
+      <label for="review-content">Din recension</label>
+      <textarea
+        id="review-content"
+        name="content"
+        minlength="10"
+        maxlength="1000"
+        aria-describedby="review-content-error"
+        required
+      ></textarea>
+      <p
+        id="review-content-error"
+        class="review-field-error"
+        aria-live="polite"
+      ></p>
+    </div>
+
+    <div class="review-form-group">
+      <label for="review-rating">Betyg, 1–5</label>
+      <input
+        type="number"
+        id="review-rating"
+        name="rating"
+        min="1"
+        max="5"
+        step="1"
+        aria-describedby="review-rating-error"
+        required
+      >
+      <p
+        id="review-rating-error"
+        class="review-field-error"
+        aria-live="polite"
+      ></p>
+    </div>
+
+    <button type="submit">Skicka</button>
+  </form>
 
       <p id="review-status" class="review-status" aria-live="polite"></p>
 
@@ -100,8 +229,35 @@ function renderBook(book) {
     form.classList.toggle('hidden')
   })
 
+  const reviewFields = [
+    [
+      form.querySelector('#review-name'),
+      form.querySelector('#review-name-error'),
+    ],
+    [
+      form.querySelector('#review-content'),
+      form.querySelector('#review-content-error'),
+    ],
+    [
+      form.querySelector('#review-rating'),
+      form.querySelector('#review-rating-error'),
+    ],
+  ]
+
+  reviewFields.forEach(([input, errorElement]) => {
+    input.addEventListener('input', () => {
+      clearReviewFieldError(input, errorElement)
+    })
+  })
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
+
+    const validatedReview = validateReviewForm(form)
+
+    if (!validatedReview) {
+      return
+    }
 
     const statusElement = document.querySelector('#review-status')
     const submitButton = form.querySelector('button[type="submit"]')
@@ -110,11 +266,8 @@ function renderBook(book) {
     statusElement.className = 'review-status'
     submitButton.disabled = true
 
-    const formData = new FormData(form)
     const newReview = {
-      name: formData.get('name'),
-      content: formData.get('content'),
-      rating: formData.get('rating'),
+      ...validatedReview,
       book_id: bookId,
     }
 

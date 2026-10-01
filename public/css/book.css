@@ -162,6 +162,39 @@ body {
   resize: vertical;
 }
 
+.review-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.review-form-group label {
+  color: var(--olive);
+  font-family: var(--text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.review-field-error {
+  min-height: 1.2rem;
+  margin: 0;
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.review-form input.invalid,
+.review-form textarea.invalid {
+  border-color: var(--cinnamon);
+  background-color: rgb(144 81 46 / 8%);
+}
+
+.review-form input.invalid:focus,
+.review-form textarea.invalid:focus {
+  outline: 3px solid rgb(144 81 46 / 30%);
+}
+
 .review-form button {
   padding: 0.4rem 0.9rem;
   border: none;
