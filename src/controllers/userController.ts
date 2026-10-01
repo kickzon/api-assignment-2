@@ -33,28 +33,89 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, password } = req.body;
+  const { username, password } = req.body ?? {};
 
   if (res.locals.userId !== id) {
-    res.status(403).json({ message: "You can only update your own account" });
+    res.status(403).json({
+      message: "You can only update your own account",
+    });
+    return;
+  }
+
+  if (
+    username !== undefined &&
+    typeof username !== "string"
+  ) {
+    res.status(400).json({
+      message: "username must be a string",
+    });
+    return;
+  }
+
+  if (
+    password !== undefined &&
+    typeof password !== "string"
+  ) {
+    res.status(400).json({
+      message: "password must be a string",
+    });
+    return;
+  }
+
+  if (username === undefined && password === undefined) {
+    res.status(400).json({
+      message: "at least one field is required",
+    });
+    return;
+  }
+
+  const normalizedUsername =
+    username !== undefined ? username.trim() : undefined;
+
+  if (
+    normalizedUsername !== undefined &&
+    (normalizedUsername.length < 3 ||
+      normalizedUsername.length > 30)
+  ) {
+    res.status(400).json({
+      message: "username must contain between 3 and 30 characters",
+    });
+    return;
+  }
+
+  if (
+    password !== undefined &&
+    (password.length < 8 || password.length > 72)
+  ) {
+    res.status(400).json({
+      message: "password must contain between 8 and 72 characters",
+    });
     return;
   }
 
   try {
     const user = await User.findById(id);
+
     if (!user) {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({
+        message: "User not found",
+      });
       return;
     }
 
-    // Update user fields if provided
-    if (username) user.username = username;
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
+    if (normalizedUsername !== undefined) {
+      user.username = normalizedUsername;
     }
+
+    if (password !== undefined) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+
     await user.save();
-    res.json({ message: "User updated successfully" });
+
+    res.json({
+      message: "User updated successfully",
+    });
   } catch (error) {
     if (
       error &&
@@ -62,10 +123,15 @@ export const updateUser = async (req: Request, res: Response) => {
       "code" in error &&
       error.code === 11000
     ) {
-      res.status(409).json({ message: "Username already exists" });
+      res.status(409).json({
+        message: "Username already exists",
+      });
       return;
     }
-    res.status(500).json({ message: "Error updating user" });
+
+    res.status(500).json({
+      message: "Error updating user",
+    });
   }
 };
 
