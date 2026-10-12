@@ -105,6 +105,54 @@
   font-weight: 700;
 }
 
+.book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.book-action-button {
+  padding: 0.5rem 0.9rem;
+  border: 2px solid;
+  border-radius: 15px;
+  font-family: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.edit-book-button {
+  border-color: var(--olive);
+  background-color: var(--olive);
+  color: white;
+}
+
+.edit-book-button:hover {
+  background-color: transparent;
+  color: var(--olive);
+  transform: translateY(-2px);
+}
+
+.delete-book-button {
+  border-color: var(--cinnamon);
+  background-color: transparent;
+  color: var(--cinnamon);
+}
+
+.delete-book-button:hover {
+  background-color: var(--cinnamon);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.book-action-button:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
+}
+
 @media (max-width: 650px) {
   .books-table {
     display: block;
