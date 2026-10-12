@@ -18,12 +18,13 @@ const publishedYearError = document.querySelector('#published-year-error')
 
 const bookFormMessage = document.querySelector('#book-form-message')
 const createBookSubmit = document.querySelector('#create-book-submit')
+let editingBookId = null
 
 const currentYear = new Date().getFullYear()
 publishedYearInput.max = String(currentYear)
 
 addBookBtn.addEventListener('click', showForm)
-bookForm.addEventListener('submit', addBook)
+bookForm.addEventListener('submit', handleBookSubmit)
 
 // Visar ett valideringsfel vid ett fält i bokformuläret.
 function showBookFieldError(input, errorElement, message) {
@@ -171,7 +172,30 @@ bookFields.forEach(([input, errorElement]) => {
   })
 })
 
+// Öppnar bokformuläret och fyller det med bokens nuvarande uppgifter.
+function showEditBookForm(book) {
+  editingBookId = book._id
+
+  clearBookFormFeedback()
+
+  titleInput.value = book.title
+  authorInput.value = book.author
+  descriptionInput.value = book.description
+  genresInput.value = Array.isArray(book.genres)
+    ? book.genres.join(', ')
+    : book.genres
+  imageInput.value = book.image
+  publishedYearInput.value = book.published_year
+
+  createBookSubmit.textContent = 'Spara ändringar'
+  modal.classList.remove('hidden')
+  addBookBtn.classList.add('hidden')
+  titleInput.focus()
+}
+
 function showForm() {
+  editingBookId = null
+  createBookSubmit.textContent = 'Lägg till bok'
   bookForm.reset()
   clearBookFormFeedback()
   modal.classList.remove('hidden')
@@ -180,6 +204,8 @@ function showForm() {
 
 // Stänger bokformuläret utan att spara något.
 function hideForm() {
+  editingBookId = null
+  createBookSubmit.textContent = 'Lägg till bok'
   bookForm.reset()
   clearBookFormFeedback()
   modal.classList.add('hidden')
@@ -188,8 +214,8 @@ function hideForm() {
 
 cancelBookForm.addEventListener('click', hideForm)
 
-// Validerar och skickar en ny bok till API:t.
-async function addBook(event) {
+// Validerar formuläret och skapar eller uppdaterar en bok.
+async function handleBookSubmit(event) {
   event.preventDefault()
 
   const book = validateBookForm()
@@ -198,30 +224,43 @@ async function addBook(event) {
     return
   }
 
+  const isEditing = editingBookId !== null
+
   createBookSubmit.disabled = true
   cancelBookForm.disabled = true
-  createBookSubmit.textContent = 'Sparar bok...'
-  bookFormMessage.textContent = 'Boken sparas...'
+  createBookSubmit.textContent = isEditing
+    ? 'Sparar ändringar...'
+    : 'Sparar bok...'
+  bookFormMessage.textContent = isEditing
+    ? 'Ändringarna sparas...'
+    : 'Boken sparas...'
   bookFormMessage.className = ''
 
   try {
-    await createBook(book)
+    if (isEditing) {
+      await updateBook(editingBookId, book)
+    } else {
+      await createBook(book)
+    }
 
-    bookForm.reset()
-    clearBookFormFeedback()
-    modal.classList.add('hidden')
-    addBookBtn.classList.remove('hidden')
-
+    hideForm()
     await initAdminBooks()
-    showMessage('Boken har lagts till.')
+
+    showMessage(
+      isEditing
+        ? 'Boken har uppdaterats.'
+        : 'Boken har lagts till.',
+    )
   } catch (error) {
-    console.error('Error creating book:', error)
-    bookFormMessage.textContent =
-      'Det gick inte att lägga till boken. Försök igen.'
+    console.error('Error saving book:', error)
+    bookFormMessage.textContent = isEditing
+      ? 'Det gick inte att uppdatera boken. Försök igen.'
+      : 'Det gick inte att lägga till boken. Försök igen.'
     bookFormMessage.className = 'error'
   } finally {
     createBookSubmit.disabled = false
     cancelBookForm.disabled = false
-    createBookSubmit.textContent = 'Lägg till bok'
+    createBookSubmit.textContent =
+      editingBookId !== null ? 'Spara ändringar' : 'Lägg till bok'
   }
 }

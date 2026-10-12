@@ -44,6 +44,76 @@ async function createBook(book) {
   return await response.json()
 }
 
+// Uppdaterar en befintlig bok och returnerar API-svaret.
+async function updateBook(id, book) {
+  const response = await fetch(`${API_URL}${BOOKS_PATH}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(book),
+    credentials: 'include',
+  })
+
+  if (response.status === 401) {
+    window.location.href = 'login.html'
+    return null
+  }
+
+  if (response.status === 403) {
+    throw new Error('You are not allowed to update books')
+  }
+
+  if (!response.ok) {
+    throw new Error(`Could not update book: ${response.status}`)
+  }
+
+  return await response.json()
+}
+
+// Raderar en bok efter att administratören har bekräftat valet.
+async function handleDeleteBook(book) {
+  const confirmed = window.confirm(
+    `Vill du radera "${book.title}"? Bokens recensioner raderas också.`,
+  )
+
+  if (!confirmed) return
+
+  showMessage('Boken raderas...')
+
+  try {
+    const response = await fetch(
+      `${API_URL}${BOOKS_PATH}/${book._id}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    )
+
+    if (response.status === 401) {
+      window.location.href = 'login.html'
+      return
+    }
+
+    if (response.status === 403) {
+      showMessage('Du har inte behörighet att radera böcker.')
+      return
+    }
+
+    if (!response.ok) {
+      throw new Error(`Could not delete book: ${response.status}`)
+    }
+
+    await initAdminBooks()
+    await loadAdminReviews()
+
+    showMessage(`"${book.title}" har raderats.`)
+  } catch (error) {
+    console.error('Error deleting book:', error)
+    showMessage('Det gick inte att radera boken.')
+  }
+}
+
 function renderPublicBooks(data) {
   const element = document.querySelector('.books')
   if (!element) return
@@ -70,21 +140,82 @@ function renderPublicBooks(data) {
     .join('')
 }
 
+// Visar böckerna och deras adminåtgärder i boktabellen.
 function renderAdminBooks(data) {
-  const element = document.querySelector('.books-table-body')
-  if (!element) return
-  element.innerHTML = data
-    .map(
-      (book) => `
-    <tr>
-      <td>${book.title}</td>
-      <td>${book.author}</td>
-      <td>${book.genres}</td>
-      <td>${book.created_at}</td>
-    </tr>
-  `,
+  const tableBody = document.querySelector('.books-table-body')
+
+  if (!tableBody) return
+
+  tableBody.replaceChildren()
+
+  if (data.length === 0) {
+    const row = document.createElement('tr')
+    const cell = document.createElement('td')
+
+    cell.colSpan = 6
+    cell.textContent = 'Det finns inga böcker att visa.'
+
+    row.appendChild(cell)
+    tableBody.appendChild(row)
+    return
+  }
+
+  data.forEach((book) => {
+    const row = document.createElement('tr')
+
+    const titleCell = document.createElement('td')
+    titleCell.textContent = book.title
+
+    const authorCell = document.createElement('td')
+    authorCell.textContent = book.author
+
+    const genresCell = document.createElement('td')
+    genresCell.textContent = Array.isArray(book.genres)
+      ? book.genres.join(', ')
+      : book.genres
+
+    const publishedYearCell = document.createElement('td')
+    publishedYearCell.textContent = book.published_year
+
+    const createdCell = document.createElement('td')
+    createdCell.textContent = new Date(book.created_at).toLocaleDateString(
+      'sv-SE',
     )
-    .join('')
+
+    const actionsCell = document.createElement('td')
+    const actions = document.createElement('div')
+    actions.className = 'book-actions'
+
+    const editButton = document.createElement('button')
+    editButton.type = 'button'
+    editButton.className = 'book-action-button edit-book-button'
+    editButton.textContent = 'Redigera'
+    editButton.addEventListener('click', () => {
+      showEditBookForm(book)
+    })
+
+    const deleteButton = document.createElement('button')
+    deleteButton.type = 'button'
+    deleteButton.className = 'book-action-button delete-book-button'
+    deleteButton.textContent = 'Radera'
+    deleteButton.addEventListener('click', () => {
+      handleDeleteBook(book)
+    })
+
+    actions.append(editButton, deleteButton)
+    actionsCell.appendChild(actions)
+
+    row.append(
+      titleCell,
+      authorCell,
+      genresCell,
+      publishedYearCell,
+      createdCell,
+      actionsCell,
+    )
+
+    tableBody.appendChild(row)
+  })
 }
 
 async function initPublicBooks() {
