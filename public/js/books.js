@@ -26,20 +26,22 @@ async function fetchBook(id) {
   }
 }
 
+// Skapar en ny bok och returnerar API-svaret.
 async function createBook(book) {
-  try {
-    const response = await fetch(API_URL + BOOKS_PATH, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(book),
-    })
-    const data = await response.json()
-    console.log(data)
-  } catch (e) {
-    console.error('Error:', e)
+  const response = await fetch(`${API_URL}${BOOKS_PATH}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(book),
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error(`Could not create book: ${response.status}`)
   }
+
+  return await response.json()
 }
 
 function renderPublicBooks(data) {

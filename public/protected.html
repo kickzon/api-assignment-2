@@ -87,38 +87,105 @@
         </div>
 
         <div class="modal hidden">
-          <form class="create-book-form">
+          <form class="create-book-form" novalidate>
             <div class="form-group">
               <label for="title">Titel</label>
-              <input type="text" id="title" name="title" />
+              <input
+                type="text"
+                id="title"
+                name="title"
+                maxlength="150"
+                aria-describedby="title-error"
+                required
+              />
+              <p id="title-error" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="form-group">
               <label for="author">Författare</label>
-              <input type="text" id="author" name="author" />
+              <input
+                type="text"
+                id="author"
+                name="author"
+                minlength="2"
+                maxlength="100"
+                aria-describedby="author-error"
+                required
+              />
+              <p id="author-error" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="form-group">
               <label for="description">Beskrivning</label>
-              <textarea id="description" name="description"></textarea>
+              <textarea
+                id="description"
+                name="description"
+                minlength="10"
+                maxlength="2000"
+                aria-describedby="description-error"
+                required
+              ></textarea>
+              <p
+                id="description-error"
+                class="field-error"
+                aria-live="polite"
+              ></p>
             </div>
 
             <div class="form-group">
               <label for="genres">Genrer</label>
-              <input type="text" id="genres" name="genres" />
+              <input
+                type="text"
+                id="genres"
+                name="genres"
+                maxlength="300"
+                aria-describedby="genres-help genres-error"
+                required
+              />
+              <small id="genres-help"
+                >Separera flera genrer med kommatecken.</small
+              >
+              <p id="genres-error" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="form-group">
               <label for="image">Bildadress</label>
-              <input type="text" id="image" name="image" />
+              <input
+                type="url"
+                id="image"
+                name="image"
+                aria-describedby="image-error"
+                required
+              />
+              <p id="image-error" class="field-error" aria-live="polite"></p>
             </div>
 
             <div class="form-group">
               <label for="published-year">Utgivningsår</label>
-              <input type="number" id="published-year" name="published_year" />
+              <input
+                type="number"
+                id="published-year"
+                name="published_year"
+                min="0"
+                step="1"
+                aria-describedby="published-year-error"
+                required
+              />
+              <p
+                id="published-year-error"
+                class="field-error"
+                aria-live="polite"
+              ></p>
             </div>
 
-            <button type="submit">Lägg till bok</button>
+            <p id="book-form-message" role="status" aria-live="polite"></p>
+
+            <div class="book-form-actions">
+              <button type="submit" id="create-book-submit">
+                Lägg till bok
+              </button>
+              <button type="button" id="cancel-book-form">Avbryt</button>
+            </div>
           </form>
         </div>
       </section>
