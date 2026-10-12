@@ -76,6 +76,37 @@
   color: var(--cinnamon);
 }
 
+.nav-logout-button {
+  padding: 0.8rem 1.4rem;
+  border: 2px solid var(--cinnamon);
+  border-radius: 15px;
+  background-color: transparent;
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-logout-button:hover {
+  background-color: var(--cinnamon);
+  color: white;
+}
+
+.nav-logout-button:focus-visible {
+  outline: 3px solid var(--mustard);
+  outline-offset: 3px;
+}
+
+.nav-logout-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .nav-list a:focus-visible,
 .site-logo:focus-visible {
   outline: 3px solid var(--mustard);
