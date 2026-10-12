@@ -58,6 +58,24 @@ input:focus {
   border-color: var(--cinnamon);
 }
 
+.field-error {
+  min-height: 1.25rem;
+  margin: 0;
+  color: var(--cinnamon);
+  font-family: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+input.invalid {
+  border-color: var(--cinnamon);
+  background-color: rgb(144 81 46 / 8%);
+}
+
+input.invalid:focus {
+  outline-color: rgb(144 81 46 / 30%);
+}
+
 #login-btn,
 #register-btn {
   padding: 0.8rem 1.4rem;
@@ -86,6 +104,13 @@ input:focus {
 #register-btn:focus-visible {
   outline: 3px solid var(--mustard);
   outline-offset: 3px;
+}
+
+#login-btn:disabled,
+#register-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
 }
 
 #logout-btn {

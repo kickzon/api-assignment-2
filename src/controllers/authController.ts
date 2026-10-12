@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import User from "../models/user";
 
 export const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body ?? {};
   if (username === undefined || password === undefined) {
     res.status(400).json({ message: "username and password are required" });
     return;
@@ -15,7 +15,16 @@ export const login = async (req: Request, res: Response) => {
     return;
   }
 
-  const user = await User.findOne({ username: username });
+  const normalizedUsername = username.trim();
+
+  if (!normalizedUsername || !password) {
+    res.status(400).json({
+      message: "username and password are required",
+    });
+    return;
+  }
+
+  const user = await User.findOne({ username: normalizedUsername });
 
   if (!user) {
     res.status(401).json({ message: "username/password are wrong" });
@@ -59,34 +68,62 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  if (username === undefined || password === undefined) {
-    res.status(400).json({ message: "username and password are required" });
+  const { username, password } = req.body ?? {};
+
+  if (typeof username !== "string" || typeof password !== "string") {
+    res.status(400).json({
+      message: "username and password are required",
+    });
+    return;
+  }
+
+  const normalizedUsername = username.trim();
+
+  if (normalizedUsername.length < 3 || normalizedUsername.length > 30) {
+    res.status(400).json({
+      message: "username must contain between 3 and 30 characters",
+    });
+    return;
+  }
+
+  if (password.length < 8 || password.length > 72) {
+    res.status(400).json({
+      message: "password must contain between 8 and 72 characters",
+    });
     return;
   }
 
   try {
-    const existingUser = await User.findOne({ username: username });
+    const existingUser = await User.findOne({
+      username: normalizedUsername,
+    });
 
     if (existingUser) {
-      res.status(409).json({ message: "username already exists" });
+      res.status(409).json({
+        message: "username already exists",
+      });
       return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
-      username: username,
+      username: normalizedUsername,
       password: hashedPassword,
     });
+
     await newUser.save();
 
-    // The hashedPassword is the value that should be saved in the DB, not the plain password. For security reasons
-    res
-      .status(201)
-      .json({ message: "You are registered", user: { username: username } });
-  } catch (e) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(201).json({
+      message: "You are registered",
+      user: {
+        username: normalizedUsername,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+    });
   }
 };
 

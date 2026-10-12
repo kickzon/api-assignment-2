@@ -169,6 +169,20 @@ function addRoleButton(userElement, user) {
     userElement.appendChild(actions);
 }
 
+// Visar ett valideringsfel i formuläret för kontouppdatering.
+function showUpdateFieldError(input, errorElement, message) {
+    errorElement.textContent = message;
+    input.classList.add("invalid");
+    input.setAttribute("aria-invalid", "true");
+}
+
+// Tar bort ett valideringsfel när användaren rättar fältet.
+function clearUpdateFieldError(input, errorElement) {
+    errorElement.textContent = "";
+    input.classList.remove("invalid");
+    input.removeAttribute("aria-invalid");
+}
+
 function addAccountButtons(userElement, user) {
     const actions = document.createElement("div");
     actions.className = "user-actions";
@@ -194,22 +208,49 @@ function addAccountButtons(userElement, user) {
 
         const updateForm = document.createElement("form");
         updateForm.className = "update-form";
+        updateForm.noValidate = true;
 
         const usernameLabel = document.createElement("label");
+        usernameLabel.htmlFor = `update-username-${user._id}`;
         usernameLabel.textContent = "Användarnamn";
 
         const usernameInput = document.createElement("input");
         usernameInput.type = "text";
+        usernameInput.id = `update-username-${user._id}`;
         usernameInput.value = user.username;
+        usernameInput.minLength = 3;
+        usernameInput.maxLength = 30;
+        usernameInput.autocomplete = "username";
         usernameInput.required = true;
-        usernameLabel.appendChild(usernameInput);
+        usernameInput.setAttribute(
+            "aria-describedby",
+            `update-username-error-${user._id}`
+        );
+
+        const usernameError = document.createElement("p");
+        usernameError.id = `update-username-error-${user._id}`;
+        usernameError.className = "field-error";
+        usernameError.setAttribute("aria-live", "polite");
 
         const passwordLabel = document.createElement("label");
+        passwordLabel.htmlFor = `update-password-${user._id}`;
         passwordLabel.textContent = "Nytt lösenord (valfritt)";
 
         const passwordInput = document.createElement("input");
         passwordInput.type = "password";
-        passwordLabel.appendChild(passwordInput);
+        passwordInput.id = `update-password-${user._id}`;
+        passwordInput.minLength = 8;
+        passwordInput.maxLength = 72;
+        passwordInput.autocomplete = "new-password";
+        passwordInput.setAttribute(
+            "aria-describedby",
+            `update-password-error-${user._id}`
+        );
+
+        const passwordError = document.createElement("p");
+        passwordError.id = `update-password-error-${user._id}`;
+        passwordError.className = "field-error";
+        passwordError.setAttribute("aria-live", "polite");
 
         const saveButton = document.createElement("button");
         saveButton.className = "account-button save-button";
@@ -218,18 +259,64 @@ function addAccountButtons(userElement, user) {
 
         updateForm.append(
             usernameLabel,
+            usernameInput,
+            usernameError,
             passwordLabel,
+            passwordInput,
+            passwordError,
             saveButton
         );
+
+        usernameInput.addEventListener("input", function () {
+            clearUpdateFieldError(usernameInput, usernameError);
+            showMessage("");
+        });
+
+        passwordInput.addEventListener("input", function () {
+            clearUpdateFieldError(passwordInput, passwordError);
+            showMessage("");
+        });
 
         updateForm.addEventListener("submit", async function (event) {
             event.preventDefault();
 
             const newUsername = usernameInput.value.trim();
             const newPassword = passwordInput.value;
+            let isValid = true;
+
+            clearUpdateFieldError(usernameInput, usernameError);
+            clearUpdateFieldError(passwordInput, passwordError);
 
             if (!newUsername) {
-                showMessage("Användarnamn kan inte vara tomt.");
+                showUpdateFieldError(
+                    usernameInput,
+                    usernameError,
+                    "Du måste ange ett användarnamn."
+                );
+                isValid = false;
+            } else if (newUsername.length < 3 || newUsername.length > 30) {
+                showUpdateFieldError(
+                    usernameInput,
+                    usernameError,
+                    "Användarnamnet måste innehålla mellan 3 och 30 tecken."
+                );
+                isValid = false;
+            }
+
+            if (
+                newPassword &&
+                (newPassword.length < 8 || newPassword.length > 72)
+            ) {
+                showUpdateFieldError(
+                    passwordInput,
+                    passwordError,
+                    "Lösenordet måste innehålla mellan 8 och 72 tecken."
+                );
+                isValid = false;
+            }
+
+            if (!isValid) {
+                updateForm.querySelector(".invalid").focus();
                 return;
             }
 
