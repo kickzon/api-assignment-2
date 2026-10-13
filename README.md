@@ -9,6 +9,10 @@ Bokmärkt är en fullstack-applikation för att upptäcka böcker och läsa elle
 
 Projektet skapades ursprungligen som en gruppuppgift i kursen API-utveckling på Medieinstitutet. Den här versionen vidareutvecklas självständigt som ett portfolio-projekt.
 
+## Live demo
+
+[Öppna Bokmärkt](https://api-assignment-2-three.vercel.app/)
+
 ## Funktioner
 
 ### Besökare
